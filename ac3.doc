@@ -1,0 +1,152 @@
+TABLE OF CONTENTS
+
+ac3.library/--background--
+ac3.library/Ac3Close
+ac3.library/Ac3Decode
+ac3.library/Ac3Find
+ac3.library/Ac3Open
+ac3.library/Ac3SyncInfo
+ac3.library/Ac3Version
+
+ac3.library/--background--                         ac3.library/--background--
+
+    PURPOSE
+        Decodes ATSC A/52 audio (Dolby Digital, AC-3: DVDs, transport
+        streams, .ac3 files) to 16-bit signed PCM in the CPU's byte order
+        (big-endian), interleaved. Any program may use it.
+
+        ac3.library is the integer build (68020 and up, no FPU). On a
+        68040 or 68060 with an FPU, open ac3fpu.library (AC3FPUNAME) first:
+        the same functions, in floating point, faster there. ac3.library
+        is not for a 68060.
+
+    USE
+        One decoder (Ac3Open) per stream. Find a frame's start (Ac3Find,
+        or Ac3SyncInfo on bytes you know start one), gather its
+        ai_FrameBytes bytes, and Ac3Decode them into AC3_FRAME_SAMPLES
+        samples a channel. A decoder is used by one task at a time;
+        different decoders may be used by different tasks at once.
+
+        Each frame's sample rate (48000, 44100 or 32000 Hz) is in its
+        header; it does not change within a stream in practice.
+
+    MEMORY
+        About 30 KB a decoder, from exec (MEMF_ANY). No stack beyond
+        2 KB is needed.
+
+    LICENCE
+        The library: GPL-2.0-or-later (liba52 inside; its source comes with
+        it). This interface (the headers, the .sfd, this document): MIT.
+
+ac3.library/Ac3Close                                     ac3.library/Ac3Close
+
+    NAME
+        Ac3Close -- a decoder freed (V1)
+
+    SYNOPSIS
+        Ac3Close(ac3)
+                 A0
+        VOID Ac3Close(APTR);
+
+    FUNCTION
+        Frees a decoder from Ac3Open. NULL is ignored.
+
+ac3.library/Ac3Decode                                   ac3.library/Ac3Decode
+
+    NAME
+        Ac3Decode -- one frame decoded (V1)
+
+    SYNOPSIS
+        samples = Ac3Decode(ac3, frame, pcm, info)
+        D0                  A0   A1     A2   A3
+        LONG Ac3Decode(APTR, CONST UBYTE *, WORD *, struct Ac3Info *);
+
+    FUNCTION
+        Decodes the whole frame starting at frame (all of its
+        ai_FrameBytes bytes must be there) into pcm: AC3_FRAME_SAMPLES
+        samples for each output channel (Ac3Open's mode: 2, or 1 for
+        AC3_MONO), interleaved left, right. A mono stream decoded to
+        stereo gives both channels alike.
+
+    INPUTS
+        ac3   - the decoder
+        frame - the frame's first byte (its sync word, 0x0B77)
+        pcm   - AC3_FRAME_SAMPLES * 2 WORDs (or * 1 for AC3_MONO)
+        info  - filled with the frame's header and ai_OutChannels; or NULL
+
+    RESULT
+        AC3_FRAME_SAMPLES; or AC3E_SYNC (no frame header there: nothing
+        written), AC3E_CORRUPT (the frame did not decode: pcm is silence,
+        and the next frame decodes as usual), AC3E_ARGS.
+
+ac3.library/Ac3Find                                       ac3.library/Ac3Find
+
+    NAME
+        Ac3Find -- the first frame header in a buffer (V1)
+
+    SYNOPSIS
+        offset = Ac3Find(buf, len, info)
+        D0               A0   D0   A1
+        LONG Ac3Find(CONST UBYTE *, LONG, struct Ac3Info *);
+
+    FUNCTION
+        Looks through len bytes for a valid frame header (a sync word and
+        a header that makes sense) and returns its offset, filling info
+        (if not NULL). The frame itself may go on past len.
+
+    RESULT
+        The offset, or -1 if none starts in the buffer (keep its last
+        AC3_HEADER - 1 bytes and look again with more).
+
+ac3.library/Ac3Open                                       ac3.library/Ac3Open
+
+    NAME
+        Ac3Open -- a new decoder (V1)
+
+    SYNOPSIS
+        ac3 = Ac3Open(mode, flags)
+        D0            D0    D1
+        APTR Ac3Open(ULONG, ULONG);
+
+    FUNCTION
+        A decoder for one stream, decoding to mode's channels:
+            AC3_STEREO  two (the stream's channels mixed down as A/52 says)
+            AC3_MONO    one
+            AC3_DOLBY   two, Dolby Surround (Pro Logic) compatible
+        flags:
+            AC3F_NODRC  the stream's dynamic range compression (which
+                        evens out a film's loud and quiet parts for small
+                        speakers) not applied
+
+    RESULT
+        The decoder, or NULL (no memory, or an unknown mode).
+
+ac3.library/Ac3SyncInfo                               ac3.library/Ac3SyncInfo
+
+    NAME
+        Ac3SyncInfo -- a frame's header read (V1)
+
+    SYNOPSIS
+        bytes = Ac3SyncInfo(buf, info)
+        D0                  A0   A1
+        LONG Ac3SyncInfo(CONST UBYTE *, struct Ac3Info *);
+
+    FUNCTION
+        Reads the AC3_HEADER bytes at buf as a frame header.
+
+    RESULT
+        The frame's length in bytes (info filled, if not NULL), or 0 if
+        buf does not start a frame.
+
+ac3.library/Ac3Version                                 ac3.library/Ac3Version
+
+    NAME
+        Ac3Version -- the library's description (V1)
+
+    SYNOPSIS
+        text = Ac3Version()
+        D0
+        CONST_STRPTR Ac3Version(void);
+
+    RESULT
+        For example "ac3 1.0, liba52 0.8.0, integer".

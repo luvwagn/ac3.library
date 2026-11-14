@@ -1,0 +1,20 @@
+==id $Id: ac3_lib.sfd,v 1.1 2026/11/14 $
+* ac3.library (and ac3fpu.library): A/52 (AC-3) audio to 16-bit PCM.
+* The structures and constants are in <libraries/ac3.h>. This file and the
+* headers made from it: (c) 2026 Brian King, MIT. The library itself is
+* GPL-2.0-or-later (liba52 inside).
+==base _Ac3Base
+==basetype struct Library *
+==libname ac3.library
+==bias 30
+==public
+==include <exec/types.h>
+==include <libraries/ac3.h>
+==version 1
+APTR Ac3Open(ULONG mode, ULONG flags) (d0,d1)
+VOID Ac3Close(APTR ac3) (a0)
+LONG Ac3SyncInfo(CONST UBYTE * buf, struct Ac3Info * info) (a0,a1)
+LONG Ac3Find(CONST UBYTE * buf, LONG len, struct Ac3Info * info) (a0,d0,a1)
+LONG Ac3Decode(APTR ac3, CONST UBYTE * frame, WORD * pcm, struct Ac3Info * info) (a0,a1,a2,a3)
+CONST_STRPTR Ac3Version() ()
+==end

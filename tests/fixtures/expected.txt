@@ -1,0 +1,16 @@
+3.0-32k.ac3 stereo: 42 frames, 0 bad, 32000 Hz, 128000 bit/s, acmod 3, lfe 0, out 2: crc 15be4c57
+3.0-32k.ac3 mono: 42 frames, 0 bad, 32000 Hz, 128000 bit/s, acmod 3, lfe 0, out 1: crc bc240d6a
+3.0-32k.ac3 dolby: 42 frames, 0 bad, 32000 Hz, 128000 bit/s, acmod 3, lfe 0, out 2: crc 25b4d413
+3.0-32k.ac3 stereo nodrc: 42 frames, 0 bad, 32000 Hz, 128000 bit/s, acmod 3, lfe 0, out 2: crc 15be4c57
+5.1-448k.ac3 stereo: 63 frames, 0 bad, 48000 Hz, 448000 bit/s, acmod 7, lfe 1, out 2: crc 2b264cc4
+5.1-448k.ac3 mono: 63 frames, 0 bad, 48000 Hz, 448000 bit/s, acmod 7, lfe 1, out 1: crc 91f13b78
+5.1-448k.ac3 dolby: 63 frames, 0 bad, 48000 Hz, 448000 bit/s, acmod 7, lfe 1, out 2: crc ba937da3
+5.1-448k.ac3 stereo nodrc: 63 frames, 0 bad, 48000 Hz, 448000 bit/s, acmod 7, lfe 1, out 2: crc 2b264cc4
+mono-44k.ac3 stereo: 58 frames, 0 bad, 44100 Hz, 96000 bit/s, acmod 1, lfe 0, out 2: crc c4bcb33f
+mono-44k.ac3 mono: 58 frames, 0 bad, 44100 Hz, 96000 bit/s, acmod 1, lfe 0, out 1: crc c153357c
+mono-44k.ac3 dolby: 58 frames, 0 bad, 44100 Hz, 96000 bit/s, acmod 1, lfe 0, out 2: crc c4bcb33f
+mono-44k.ac3 stereo nodrc: 58 frames, 0 bad, 44100 Hz, 96000 bit/s, acmod 1, lfe 0, out 2: crc c4bcb33f
+stereo-192k.ac3 stereo: 63 frames, 0 bad, 48000 Hz, 192000 bit/s, acmod 2, lfe 0, out 2: crc 45ec27ba
+stereo-192k.ac3 mono: 63 frames, 0 bad, 48000 Hz, 192000 bit/s, acmod 2, lfe 0, out 1: crc 0be65df5
+stereo-192k.ac3 dolby: 63 frames, 0 bad, 48000 Hz, 192000 bit/s, acmod 2, lfe 0, out 2: crc 45ec27ba
+stereo-192k.ac3 stereo nodrc: 63 frames, 0 bad, 48000 Hz, 192000 bit/s, acmod 2, lfe 0, out 2: crc 45ec27ba
