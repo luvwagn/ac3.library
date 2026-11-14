@@ -41,6 +41,14 @@
 #include "a52_internal.h"
 #include "mm_accel.h"
 
+#ifdef A52_IMDCT_TABLES
+/* ac3.library (extras/liba52/CHANGES): the tables a52_imdct_init would
+ * compute, made on the build host instead (src/ac3lib/mktables.c), so that
+ * no floating point (and no maths library) is needed when a decoder is
+ * opened: t_window, t_roots16..128, t_pre1, t_post1, t_pre2, t_post2 */
+#include A52_IMDCT_TABLES
+#endif
+
 typedef struct complex_s {
     sample_t real;
     sample_t imag;
@@ -344,6 +352,7 @@ void a52_imdct_256 (sample_t * data, sample_t * delay, sample_t bias)
     }
 }
 
+#ifndef A52_IMDCT_TABLES
 static double besselI0 (double x)
 {
     double bessel = 1;
@@ -355,8 +364,38 @@ static double besselI0 (double x)
     return bessel;
 }
 
+#endif
+
 void a52_imdct_init (uint32_t mm_accel)
 {
+#ifdef A52_IMDCT_TABLES
+    int i;
+
+    for (i = 0; i < 256; i++)
+	a52_imdct_window[i] = t_window[i];
+    for (i = 0; i < 3; i++)
+	roots16[i] = t_roots16[i];
+    for (i = 0; i < 7; i++)
+	roots32[i] = t_roots32[i];
+    for (i = 0; i < 15; i++)
+	roots64[i] = t_roots64[i];
+    for (i = 0; i < 31; i++)
+	roots128[i] = t_roots128[i];
+    for (i = 0; i < 128; i++) {
+	pre1[i].real = t_pre1[i][0];
+	pre1[i].imag = t_pre1[i][1];
+    }
+    for (i = 0; i < 64; i++) {
+	post1[i].real = t_post1[i][0];
+	post1[i].imag = t_post1[i][1];
+	pre2[i].real = t_pre2[i][0];
+	pre2[i].imag = t_pre2[i][1];
+    }
+    for (i = 0; i < 32; i++) {
+	post2[i].real = t_post2[i][0];
+	post2[i].imag = t_post2[i][1];
+    }
+#else
     int i, k;
     double sum;
     double local_imdct_window[256];
@@ -411,6 +450,8 @@ void a52_imdct_init (uint32_t mm_accel)
 	post2[i].imag = SAMPLE (sin ((M_PI / 128) * (i + 0.5)));
     }
 
+#endif /* A52_IMDCT_TABLES */
+
 #ifdef LIBA52_DJBFFT
     if (mm_accel & MM_ACCEL_DJBFFT) {
 #ifndef LIBA52_DOUBLE
@@ -427,3 +468,51 @@ void a52_imdct_init (uint32_t mm_accel)
 	ifft64 = ifft64_c;
     }
 }
+
+#ifdef A52_IMDCT_DUMP
+/* ac3.library (extras/liba52/CHANGES): the computed tables written as C
+ * for A52_IMDCT_TABLES (by src/ac3lib/mktables.c on the build host) */
+static void dump1 (FILE * f, const char * name, const sample_t * t, int n)
+{
+    int i;
+
+    fprintf (f, "static const sample_t %s[%d] = {", name, n);
+    for (i = 0; i < n; i++)
+#ifdef LIBA52_FIXED
+	fprintf (f, "%s%ld", i % 8 ? ", " : ",\n    " + (i == 0), (long) t[i]);
+#else
+	fprintf (f, "%s%.9ef", i % 4 ? ", " : ",\n    " + (i == 0), (double) t[i]);
+#endif
+    fprintf (f, "\n};\n");
+}
+
+static void dump2 (FILE * f, const char * name, const complex_t * t, int n)
+{
+    int i;
+
+    fprintf (f, "static const sample_t %s[%d][2] = {", name, n);
+    for (i = 0; i < n; i++)
+#ifdef LIBA52_FIXED
+	fprintf (f, "%s{%ld, %ld}", i % 4 ? ", " : ",\n    " + (i == 0), (long) t[i].real,
+		 (long) t[i].imag);
+#else
+	fprintf (f, "%s{%.9ef, %.9ef}", i % 2 ? ", " : ",\n    " + (i == 0),
+		 (double) t[i].real, (double) t[i].imag);
+#endif
+    fprintf (f, "\n};\n");
+}
+
+void a52_imdct_dump (FILE * f)
+{
+    a52_imdct_init (0);
+    dump1 (f, "t_window", a52_imdct_window, 256);
+    dump1 (f, "t_roots16", roots16, 3);
+    dump1 (f, "t_roots32", roots32, 7);
+    dump1 (f, "t_roots64", roots64, 15);
+    dump1 (f, "t_roots128", roots128, 31);
+    dump2 (f, "t_pre1", pre1, 128);
+    dump2 (f, "t_post1", post1, 64);
+    dump2 (f, "t_pre2", pre2, 64);
+    dump2 (f, "t_post2", post2, 32);
+}
+#endif

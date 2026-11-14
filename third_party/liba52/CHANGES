@@ -1,0 +1,34 @@
+liba52 for ac3.library: where it came from, and what was changed
+=================================================================
+
+Source: a52dec 0.8.0 (5 November 2022, the release that took over the
+unreleased 0.7.5 work, maintained since at VideoLAN), from Adelie Linux's
+import, github.com/jsaowji/a52dec at commit 2d6d121 (which adds Alpine's
+gcc 15 patch). code.videolan.org and the release tarball's mirrors could
+not be reached from the build machine, so the files were not compared with
+the official a52dec-0.8.0.tar.gz (MD5 4debeed0257f5312e84d92711a5cfcec
+according to Linux From Scratch). Only liba52's decoder (liba52/*.c, *.h)
+and its public headers (include/a52.h, attributes.h, mm_accel.h) are kept,
+with COPYING, AUTHORS, README and NEWS; the a52dec program, libao and the
+build system are left out.
+
+Licence: GPL-2.0-or-later (COPYING), as all of liba52.
+
+Changes (14 November 2026, for ac3.library):
+
+1. liba52/a52_internal.h: a third choice of the fixed-point build's
+   multiplies, A52_MUL64: the full 32 x 32 -> 64-bit product shifted, one
+   MULS.L on a 68020, 68030 or 68040 (not the 68060, which has no 64-bit
+   MULS.L and would trap to 68060.library), else the same in 64-bit C. The
+   results are the 64-bit C's on every machine. It halves the decoding time
+   on a 68020 against upstream's default (three 16-bit products), and is
+   more accurate.
+
+2. liba52/imdct.c: A52_IMDCT_TABLES and A52_IMDCT_DUMP. With
+   A52_IMDCT_DUMP, a52_imdct_dump() writes the IMDCT's tables (the window,
+   the FFT roots and the twiddle factors) as C; with A52_IMDCT_TABLES
+   naming that file, a52_imdct_init() copies them instead of computing
+   them with sin, cos, sqrt and a Bessel function in double precision. The
+   tables are made on the build host (src/ac3lib/mktables.c), so the Amiga
+   needs no floating point and no maths library when a decoder is opened.
+   Without either macro the file is as it was.

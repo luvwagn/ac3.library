@@ -138,7 +138,25 @@ typedef int16_t quantizer_t;
 #define SAMPLE(x) (sample_t)((x) * (1 << 30))
 #define LEVEL(x) (level_t)((x) * (1 << 26))
 
-#if 0
+#if defined(A52_MUL64)
+/* ac3.library (extras/liba52/CHANGES): the full 32 x 32 -> 64 product, one
+ * MULS.L on a 68020, 68030 or 68040 (not a 68060: emulated there); the
+ * same results as the 64-bit C below, half the time of the three 16-bit
+ * products on a 68020 */
+#if defined(__m68k__) && !defined(__mc68060__)
+static inline int32_t a52_mul64(int32_t a, int32_t b, int sh)
+{
+    int32_t hi, lo = a;
+    __asm__("muls.l %2,%0:%1" : "=d"(hi), "+d"(lo) : "d"(b));
+    return (int32_t)((((uint32_t)lo) >> sh) | ((uint32_t)hi << (32 - sh)));
+}
+#define MUL(a,b) a52_mul64((a), (b), 30)
+#define MUL_L(a,b) a52_mul64((a), (b), 26)
+#else
+#define MUL(a,b) ((int32_t)(((int64_t)(a) * (b)) >> 30))
+#define MUL_L(a,b) ((int32_t)(((int64_t)(a) * (b)) >> 26))
+#endif
+#elif 0
 #define MUL(a,b) ((int)(((int64_t)(a) * (b) + (1 << 29)) >> 30))
 #define MUL_L(a,b) ((int)(((int64_t)(a) * (b) + (1 << 25)) >> 26))
 #elif 1
