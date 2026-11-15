@@ -33,17 +33,17 @@
 
 #ifdef LIBA52_FIXED
 const char LibName[] = "ac3.library";
-const char LibIdString[] = "ac3 1.0 (14.11.2026) liba52 0.8.0, integer";
+const char LibIdString[] = "ac3 1.1 (14.11.2026) liba52 0.8.0, integer";
 static const char __attribute__((used)) LibVerTag[] =
-    "$VER: ac3.library 1.0 (14.11.2026) liba52 0.8.0, integer (68020+)";
+    "$VER: ac3.library 1.1 (14.11.2026) liba52 0.8.0, integer (68020+)";
 #else
 const char LibName[] = "ac3fpu.library";
-const char LibIdString[] = "ac3fpu 1.0 (14.11.2026) liba52 0.8.0, FPU";
+const char LibIdString[] = "ac3fpu 1.1 (14.11.2026) liba52 0.8.0, FPU";
 static const char __attribute__((used)) LibVerTag[] =
-    "$VER: ac3fpu.library 1.0 (14.11.2026) liba52 0.8.0, FPU (68040/68060)";
+    "$VER: ac3fpu.library 1.1 (14.11.2026) liba52 0.8.0, FPU (68040/68060)";
 #endif
 const UWORD LibVersion = 1;
-const UWORD LibRevision = 0;
+const UWORD LibRevision = 1;   /* 1.1: ac3fpu rounds without touching the FPCR */
 
 struct ExecBase *SysBase;
 #define API
@@ -158,8 +158,19 @@ static inline WORD to16(sample_t s)
 #ifdef LIBA52_FIXED
     LONG i = s >> 15;
 #else
-    float f = s * 32767.0f;
-    LONG i = (LONG)(f >= 0 ? f + 0.5f : f - 0.5f);
+    /* rounded to an integer by the FPU's own addition: 1.5 x 2^23 added,
+     * the sum stored as a float leaves the integer in its low mantissa
+     * bits. A (LONG) cast made gcc switch the FPCR to rounding toward zero
+     * and back around every sample: 6 FPCR writes a stereo sample pair,
+     * slow on a real 68040/060 and very slow under UAE's FPU (ac3fpu took
+     * 14-35 ms a frame there against the integer build's 1.5). */
+    union {
+        float f;
+        LONG i;
+    } u;
+    LONG i;
+    u.f = s * 32767.0f + 12582912.0f;
+    i = u.i - 0x4B400000L;
 #endif
     return (WORD)(i > 32767 ? 32767 : i < -32768 ? -32768 : i);
 }
