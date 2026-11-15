@@ -63,9 +63,9 @@ void ac3p_free(void *p)
 #endif
 
 #ifdef LIBA52_FIXED
-static const char version[] = "ac3 1.0, liba52 0.8.0, integer";
+static const char version[] = "ac3 1.1, liba52 0.8.0, integer";
 #else
-static const char version[] = "ac3fpu 1.0, liba52 0.8.0, FPU";
+static const char version[] = "ac3fpu 1.1, liba52 0.8.0, FPU";
 #endif
 
 struct Ac3 {
