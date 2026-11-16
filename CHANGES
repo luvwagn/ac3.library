@@ -1,0 +1,21 @@
+ac3.library and ac3fpu.library: changes
+=======================================
+
+1.1 (14 November 2026)
+----------------------
+
+- ac3fpu.library: samples rounded to 16 bits without changing the FPU's
+  rounding mode (FPCR) and back for every sample.
+- The Version() text says 1.1 too.
+
+1.0 (14 November 2026)
+----------------------
+
+- First version: liba52 0.8.0's integer build (ac3.library, one MULS.L a
+  multiply) and floating-point build (ac3fpu.library), the IMDCT's tables
+  made beforehand. Stereo, mono and Dolby Surround output, dynamic range
+  compression on or off.
+
+The source moved from AmigaMCE's repository to its own on 15 November
+2026, with its history; the libraries built from it are byte for byte the
+same.

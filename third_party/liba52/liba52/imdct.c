@@ -42,8 +42,8 @@
 #include "mm_accel.h"
 
 #ifdef A52_IMDCT_TABLES
-/* ac3.library (extras/liba52/CHANGES): the tables a52_imdct_init would
- * compute, made on the build host instead (src/ac3lib/mktables.c), so that
+/* ac3.library (third_party/liba52/CHANGES): the tables a52_imdct_init would
+ * compute, made on the build host instead (src/mktables.c), so that
  * no floating point (and no maths library) is needed when a decoder is
  * opened: t_window, t_roots16..128, t_pre1, t_post1, t_pre2, t_post2 */
 #include A52_IMDCT_TABLES
@@ -470,8 +470,8 @@ void a52_imdct_init (uint32_t mm_accel)
 }
 
 #ifdef A52_IMDCT_DUMP
-/* ac3.library (extras/liba52/CHANGES): the computed tables written as C
- * for A52_IMDCT_TABLES (by src/ac3lib/mktables.c on the build host) */
+/* ac3.library (third_party/liba52/CHANGES): the computed tables written as C
+ * for A52_IMDCT_TABLES (by src/mktables.c on the build host) */
 static void dump1 (FILE * f, const char * name, const sample_t * t, int n)
 {
     int i;

@@ -1,11 +1,11 @@
 #!/bin/sh
-# Makes ac3.library's test files (tests/fixtures/ac3/) from synthetic
+# Makes ac3.library's test files (tests/fixtures/) from synthetic
 # sound (tones, a sweep and noise; nothing recorded): stereo 192 kbit/s at
 # 48 kHz, 5.1 448 kbit/s at 48 kHz, mono 96 kbit/s at 44.1 kHz, and 3/0
 # at 32 kHz, two seconds each. Needs ffmpeg with its AC-3 encoder. The
 # files are in git; this is how they were made. (c) 2026 Brian King, MIT.
 set -e
-out=${1:-tests/fixtures/ac3}
+out=${1:-tests/fixtures}
 mkdir -p "$out"
 src='aevalsrc=0.4*sin(2*PI*440*t)+0.2*sin(2*PI*(200+900*t)*t)+0.1*(random(0)-0.5)|0.4*sin(2*PI*660*t)+0.2*sin(2*PI*3000*t)*sin(2*PI*2*t):s=48000:d=2'
 ffmpeg -v error -y -f lavfi -i "$src" -c:a ac3 -b:a 192k "$out/stereo-192k.ac3"

@@ -4,7 +4,7 @@
  *
  * This header, ac3_lib.sfd and the clib, inline and proto headers made
  * from it are MIT: (c) 2026 Brian King. The library itself is
- * GPL-2.0-or-later (liba52 inside): see src/ac3lib/README.
+ * GPL-3.0-or-later (liba52 inside): see README.md.
  *
  * ac3.library is liba52's integer build (68020 and up, no FPU needed);
  * ac3fpu.library, where present, is its floating-point build for a 68040

@@ -1,6 +1,6 @@
 /*
  * ac3.library: ATSC A/52 (Dolby Digital, AC-3) audio decoded to 16-bit
- * PCM by liba52 0.8.0 (extras/liba52), for any program, as mpega.library
+ * PCM by liba52 0.8.0 (third_party/liba52), for any program, as mpega.library
  * decodes MPEG audio. Built twice from this file:
  *   ac3.library     liba52's integer build (LIBA52_FIXED), 68020 and up,
  *                   no FPU; its multiplies one MULS.L each (A52_MUL64)
@@ -15,8 +15,8 @@
  * task at a time. Its memory: about 30 KB a decoder.
  *
  * (c) 2026 Brian King. ac3.library is free software under the GNU General
- * Public License, version 2 or (at your option) any later version, as
- * liba52 is: see COPYING in extras/liba52.
+ * Public License, version 3 or (at your option) any later version (LICENSE);
+ * liba52 inside is GPL-2.0-or-later (third_party/liba52/COPYING).
  */
 #include "config.h"
 #include <inttypes.h>

@@ -29,6 +29,6 @@ Changes (14 November 2026, for ac3.library):
    the FFT roots and the twiddle factors) as C; with A52_IMDCT_TABLES
    naming that file, a52_imdct_init() copies them instead of computing
    them with sin, cos, sqrt and a Bessel function in double precision. The
-   tables are made on the build host (src/ac3lib/mktables.c), so the Amiga
+   tables are made on the build host (src/mktables.c), so the Amiga
    needs no floating point and no maths library when a decoder is opened.
    Without either macro the file is as it was.

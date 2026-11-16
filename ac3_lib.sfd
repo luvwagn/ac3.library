@@ -2,7 +2,7 @@
 * ac3.library (and ac3fpu.library): A/52 (AC-3) audio to 16-bit PCM.
 * The structures and constants are in <libraries/ac3.h>. This file and the
 * headers made from it: (c) 2026 Brian King, MIT. The library itself is
-* GPL-2.0-or-later (liba52 inside).
+* GPL-3.0-or-later (liba52 inside).
 ==base _Ac3Base
 ==basetype struct Library *
 ==libname ac3.library

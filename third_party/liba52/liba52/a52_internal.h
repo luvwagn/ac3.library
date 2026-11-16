@@ -139,7 +139,7 @@ typedef int16_t quantizer_t;
 #define LEVEL(x) (level_t)((x) * (1 << 26))
 
 #if defined(A52_MUL64)
-/* ac3.library (extras/liba52/CHANGES): the full 32 x 32 -> 64 product, one
+/* ac3.library (third_party/liba52/CHANGES): the full 32 x 32 -> 64 product, one
  * MULS.L on a 68020, 68030 or 68040 (not a 68060: emulated there); the
  * same results as the 64-bit C below, half the time of the three 16-bit
  * products on a 68020 */

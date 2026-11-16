@@ -3,7 +3,7 @@
  * functions (on the host: ac3lib.c built in; on the 68k: the library
  * opened from PROGDIR:Libs or LIBS:), in every mode, and its samples'
  * CRC-32 (big-endian words) printed with the frames' details. The host's
- * lines and the 68k's must match each other and tests/fixtures/ac3/expected.txt.
+ * lines and the 68k's must match each other and tests/fixtures/expected.txt.
  * (c) 2026 Brian King, MIT. Usage: ac3_test [-w out.raw] file...
  */
 #include <stdio.h>

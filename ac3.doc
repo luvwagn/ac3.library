@@ -35,8 +35,9 @@ ac3.library/--background--                         ac3.library/--background--
         2 KB is needed.
 
     LICENCE
-        The library: GPL-2.0-or-later (liba52 inside; its source comes with
-        it). This interface (the headers, the .sfd, this document): MIT.
+        The library: GPL-3.0-or-later (liba52 inside, GPL-2.0-or-later);
+        its source: https://github.com/luvwagn/ac3.library. This
+        interface (the headers, the .sfd, this document): MIT.
 
 ac3.library/Ac3Close                                     ac3.library/Ac3Close
 

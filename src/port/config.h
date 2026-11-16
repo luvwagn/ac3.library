@@ -1,7 +1,7 @@
 /*
  * liba52's config.h for ac3.library (forced first into each of its
  * files): its memory from exec on the Amiga (it asks only when a decoder
- * is opened and closed). Part of ac3.library, GPL-2.0-or-later.
+ * is opened and closed). Part of ac3.library, GPL-3.0-or-later.
  */
 #ifndef AC3LIB_CONFIG_H
 #define AC3LIB_CONFIG_H

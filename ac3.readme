@@ -1,0 +1,48 @@
+Short:        AC-3 (Dolby Digital) audio decoder library
+Author:       Brian King; liba52 by Aaron Holtzman, Michel Lespinasse et al.
+Uploader:     Brian King
+Type:         util/libs
+Version:      1.1
+Architecture: m68k-amigaos >= 3.0.0
+Distribution: Aminet
+Requires:     68020+
+Replaces:     -
+
+ac3.library decodes A/52 (Dolby Digital, AC-3) audio, as found on DVDs,
+in transport streams and in .ac3 files, to 16-bit PCM, for any program,
+as mpega.library decodes MPEG audio.
+
+- Stereo, mono or Dolby Surround compatible stereo: a stream's 5.1 is
+  mixed down as A/52 says. 48, 44.1 and 32 kHz; dynamic range
+  compression on or off.
+- Two builds with the same functions:
+    ac3.library     integer: a 68020, 68030 or 68040, no FPU needed
+                    (not for a 68060: its 64-bit multiplies would be
+                    emulated by 68060.library)
+    ac3fpu.library  floating point: a 68040 or 68060 with its FPU
+- About 30 KB a decoder. Nothing computed when a decoder is opened, no
+  maths library needed.
+
+The decoder is liba52 0.8.0 (VideoLAN's a52dec), its integer build made
+faster for a 68k: one MULS.L a multiply.
+
+Speed, as vamos counts a 68020's cycles: a frame (32 ms of sound at
+48 kHz) takes 3.5 million cycles in stereo at 192 kbit/s, 4.8 million in
+5.1 at 448 kbit/s. A 68040 at 40 MHz or so manages stereo; a 68060 plays
+5.1 with time to spare. Not yet measured on real hardware.
+
+Contents:
+  ac3/Libs/ac3.library, ac3fpu.library   copy to LIBS:
+  ac3/Include/                           the headers, for programmers
+  ac3/ac3.doc, ac3_lib.sfd               the functions
+  ac3/README.md, CHANGES
+
+Licence: the libraries are GPL-3.0-or-later (liba52 is GPL-2.0-or-later:
+COPYING.liba52); their source is at
+
+  https://github.com/luvwagn/ac3.library
+
+The headers, the .sfd and ac3.doc are MIT, so any program may be built
+against them and open the library at run time.
+
+Made for AmigaMCE, a media centre for the Amiga.
