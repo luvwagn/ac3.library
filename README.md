@@ -61,7 +61,9 @@ make test       the fixtures (tests/mkac3.sh made them from synthetic
 make lha        build/ac3.lha for Aminet
 ```
 
-Needs bebbo's m68k-amigaos-gcc (libnix), a C compiler for the build
+Needs [AmigaPorts' m68k-amigaos-gcc](https://github.com/AmigaPorts/m68k-amigaos-gcc)
+16.2 (rc24 or later; the continuation of bebbo's amiga-gcc) with libnix, a
+C compiler for the build
 computer, and for the tests amitools' vamos.
 
 ## Speed

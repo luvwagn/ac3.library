@@ -15,7 +15,8 @@
 #   make lha        build/ac3.lha, for Aminet (no source: it points to
 #                   https://github.com/luvwagn/ac3.library)
 #
-# Needs m68k-amigaos-gcc (bebbo's toolchain, libnix), a C compiler for
+# Needs AmigaPorts' m68k-amigaos-gcc 16.2 (rc24 or later; the continuation
+# of bebbo's amiga-gcc), with libnix (-noixemul), a C compiler for
 # this computer (the IMDCT's tables are made on it), and for the tests
 # amitools' vamos.
 
