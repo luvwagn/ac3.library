@@ -4,8 +4,9 @@ A/52 (Dolby Digital, AC-3) audio, as found on DVDs, in transport streams
 and in `.ac3` files, decoded to 16-bit PCM for any Amiga program, as
 `mpega.library` decodes MPEG audio. Stereo, mono or Dolby Surround
 compatible stereo: a stream's 5.1 is mixed down as A/52 says. Made for
-AmigaMCE, a media centre for the Amiga, which opens it at run time to play
-DVDs and videos where there is no ZZ9000 card to decode their sound.
+Ambiance, an Amiga Media Center application, which opens it at run time
+to play DVDs and videos where there is no ZZ9000 card to decode their
+sound.
 
 | Library | Build | For |
 |---|---|---|

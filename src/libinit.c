@@ -1,4 +1,4 @@
-/* libnix's shared library start-up (public domain), as AmigaMCE's libraries
+/* libnix's shared library start-up (public domain), as Ambiance's libraries
  * use it: ac3.library's and ac3fpu.library's ROMTag, init, open, close and
  * expunge. */
 

@@ -45,4 +45,4 @@ COPYING.liba52); their source is at
 The headers, the .sfd and ac3.doc are MIT, so any program may be built
 against them and open the library at run time.
 
-Made for AmigaMCE, a media centre for the Amiga.
+Made for Ambiance, an Amiga Media Center application.
